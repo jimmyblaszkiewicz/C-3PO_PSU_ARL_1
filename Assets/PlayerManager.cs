@@ -1,0 +1,99 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Photon.Pun;
+using UnityEngine.UI;
+
+
+public class PlayerManager : MonoBehaviourPunCallbacks
+{
+
+    public NetworkManager networkManager;
+    private GameObject player;
+    private PlayerStatistics playerstats;
+    public Text timeSpentText;
+    public Text scenariosCompleted;
+    public Text name;
+    public GameObject computer;
+    public GameObject teacherUI;
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+        networkManager = GameObject.Find("Network Manager").GetComponent<NetworkManager>();
+        if (networkManager.username == "Teacher")
+        {
+            createTeacherPrefab();
+        }
+
+        else
+        {
+            player = PhotonNetwork.Instantiate("Player", new Vector3(0, 15, 0), Quaternion.identity, 0);
+            Debug.Log("Player Tag: " + player.tag);
+            int newPlayer = networkManager.loadPlayerData(player);
+            playerstats = player.GetComponent<PlayerStatistics>();
+            if (newPlayer == -1)
+                playerstats.name = networkManager.username;
+            Debug.Log("Creating player object with name:" + player.GetComponent<PlayerStatistics>().name);
+            SetupPlayerRelations(player);
+        }
+    }
+
+    private void SetupPlayerRelations(GameObject player)
+    {
+        createComputerPrefab();
+        GameObject.Find("Main Camera").GetComponent<CameraMovement>().setPlayer(player.GetComponent<Transform>());
+        GameObject.Find("Console Manager").GetComponent<Console.DeveloperConsole>().InitializePlayer(player);
+        Debug.Log("Done setting up.");
+
+    }
+
+    private void createComputerPrefab()
+    {
+        computer = (GameObject)Instantiate(computer);
+        GameObject canvas = GameObject.Find("Canvas");
+        name = GetChild(canvas, "Text3").GetComponent<Text>();
+        timeSpentText = GetChild(canvas, "Text1").GetComponent<Text>();
+        scenariosCompleted = GetChild(canvas, "Text2").GetComponent<Text>();
+    }
+
+    private GameObject GetChild(GameObject obj, string name)
+    {
+        Transform trans = obj.transform;
+        Transform childTrans = trans.Find(name);
+        if (childTrans == null)
+            return null;
+        return childTrans.gameObject;
+    }
+
+    private void createTeacherPrefab()
+    {
+        teacherUI = (GameObject)Instantiate(teacherUI);
+        GetChild(teacherUI, "Teacher Manager").GetComponent<TeacherManager>().cameraMovement = GameObject.Find("Main Camera").GetComponent<CameraMovement>();
+    }
+
+    void OnApplicationQuit()
+    {
+        if(player!= null);
+            networkManager.savePlayerData(player);
+    }
+
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(player == null)
+            return;
+
+        if(Input.GetKey(KeyCode.Q))
+             networkManager.savePlayerData(player);
+        playerstats.timeSpent += Time.deltaTime;
+        
+        timeSpentText.text = string.Format("Time Spent: {0:0.00} s", playerstats.timeSpent);
+        name.text = "Name: " + playerstats.name;
+     
+    }
+}
+

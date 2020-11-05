@@ -662,6 +662,7 @@ PlayerSettings:
       daydreamIconForeground: {fileID: 0}
       daydreamIconBackground: {fileID: 0}
   cloudServicesEnabled:
+    Collab: 1
     UNet: 1
   luminIcon:
     m_Name: 
@@ -675,10 +676,10 @@ PlayerSettings:
     m_VersionCode: 1
     m_VersionName: 
   apiCompatibilityLevel: 6
-  cloudProjectId: 105c2d53-92f2-4133-a024-90ab61d0e671
+  cloudProjectId: 981925a3-3b83-4610-a8d4-c6d909847d09
   framebufferDepthMemorylessMode: 0
-  projectName: New Unity Project
-  organizationId: xuezhou1998
+  projectName: C-3PO
+  organizationId: jfb5666
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0

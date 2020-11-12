@@ -32,21 +32,25 @@ namespace Console
 
             if (direction == "left")
             {
+                playerMovement.command_running = true;
                 playerMovement.dX = -playerMovement.speed;
                 DeveloperConsole.AddStaticMessageToConsole("[USER] Moving the robot left....");
             }
             else if (direction == "right")
             {
+                playerMovement.command_running = true;
                 playerMovement.dX = playerMovement.speed;
                 DeveloperConsole.AddStaticMessageToConsole("[USER] Moving the robot right....");
             }
             else if (direction == "up")
             {
+                playerMovement.command_running = true;
                 playerMovement.dZ = playerMovement.speed;
                 DeveloperConsole.AddStaticMessageToConsole("[USER] Moving the robot up....");
             }
             else if (direction == "down")
             {
+                playerMovement.command_running = true;
                 playerMovement.dZ = -playerMovement.speed;
                 DeveloperConsole.AddStaticMessageToConsole("[USER] Moving the robot down....");
             }

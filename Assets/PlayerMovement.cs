@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviourPun
     public float dX = 0f;
     public float dZ = 0f;
     public float dY = 0f;
+    public bool command_running = false;
     public float speed = 1000f;
     public Rigidbody rb;
     public PhotonView photonView;
@@ -19,17 +20,27 @@ public class PlayerMovement : MonoBehaviourPun
         if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
             return;
 
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.UpArrow)){
+            command_running = false;
             dZ = speed;
-        else if (Input.GetKey(KeyCode.DownArrow))
+        }   
+        else if (Input.GetKey(KeyCode.DownArrow)){
+            command_running = false;
             dZ = -speed;
-        else if (Input.GetKey(KeyCode.LeftArrow))
+        }
+        else if (Input.GetKey(KeyCode.LeftArrow)){
+            command_running = false;
             dX = -speed;
-        else if (Input.GetKey(KeyCode.RightArrow))
+        }
+        else if (Input.GetKey(KeyCode.RightArrow)){
+            command_running = false;
             dX = speed;
-        else if (Input.GetKey(KeyCode.Space))
+        }
+        else if (Input.GetKey(KeyCode.Space)){
+            command_running = false;
             dY = speed;
-        else {
+        }
+        else if (!command_running){
             dZ = 0;
             dY = 0;
             dX = 0;

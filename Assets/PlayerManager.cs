@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class PlayerManager : MonoBehaviourPunCallbacks
@@ -80,6 +81,15 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             networkManager.savePlayerData(player);
     }
 
+    public override void OnLeftRoom()
+    {
+        OnApplicationQuit();
+        SceneManager.LoadScene(0);
+    }
+    public void LeaveRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
 
     // Update is called once per frame
     void Update()

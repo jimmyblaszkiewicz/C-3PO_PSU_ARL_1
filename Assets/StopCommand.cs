@@ -28,6 +28,7 @@ namespace Console
         public override int RunCommand(string[] input)
         {
             playerMovement.dX = 0;
+            playerMovement.dY = 0;
             playerMovement.dZ = 0;
             DeveloperConsole.AddStaticMessageToConsole("[USER] Stopping Robot....");
             return -1;

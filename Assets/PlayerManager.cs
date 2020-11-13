@@ -91,6 +91,11 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LeaveRoom();
     }
 
+    public void LoadScene(int scene_number)
+    {
+        PhotonNetwork.LoadLevel(scene_number);
+    }
+
     // Update is called once per frame
     void Update()
     {

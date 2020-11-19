@@ -1016,7 +1016,6 @@ MonoBehaviour:
   speed: 500
   rb: {fileID: 609840772423212232}
   photonView: {fileID: 6786851837035706221}
-  anim: {fileID: 0}
 --- !u!114 &7851046745940862145
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -15,7 +15,8 @@ public class TeacherManager : MonoBehaviourPunCallbacks
     public Button backButton;
 
     private Dictionary<string, GameObject> buttonDictionary;
-    private string selectedPlayer;
+    private string selectedPlayerName;
+    private GameObject selectedPlayer;
     public CameraMovement cameraMovement;
     public GameObject teacherUI;
 
@@ -31,8 +32,8 @@ public class TeacherManager : MonoBehaviourPunCallbacks
         monitorButton.gameObject.SetActive(false);
         backButton.onClick.AddListener(BackToLobby);
         backButton.gameObject.SetActive(false);
+        selectedPlayerName = null;
         selectedPlayer = null;
-        
      
     }
 
@@ -42,9 +43,9 @@ public class TeacherManager : MonoBehaviourPunCallbacks
 
         updatePlayerList();
 
-        if (selectedPlayer != null)
+        if (selectedPlayerName != null)
         {
-            PlayerStatistics activePlayer = playerList.getPlayerList()[selectedPlayer];
+            PlayerStatistics activePlayer = playerList.getPlayerList()[selectedPlayerName];
             timespent.text = "Total Time Spent: " + string.Format("{0:.##}",activePlayer.timeSpent) + " s";
             name.text = "Student : " + activePlayer.name;
             scenariosCompleted.text = "Scenarios Completed: " + activePlayer.scenariosCompleted.ToString();
@@ -70,9 +71,9 @@ public class TeacherManager : MonoBehaviourPunCallbacks
         {
             if (!playerList.getPlayerList().ContainsKey(entry.Key))
             {
-                if (entry.Key == selectedPlayer)
+                if (entry.Key == selectedPlayerName)
                 {
-                    selectedPlayer = null;
+                    selectedPlayerName = null;
                     HideMonitorButton();
                 }
                 RemoveButton(entry.Key);
@@ -115,7 +116,8 @@ public class TeacherManager : MonoBehaviourPunCallbacks
     void onClick(string name)
     {
         Debug.Log("Button Clicked");
-        selectedPlayer = name;
+        selectedPlayerName = name;
+        selectedPlayer = playerList.getPlayerList()[selectedPlayerName].getPlayer();
         ShowMonitorButton();
 
     }
@@ -129,11 +131,9 @@ public class TeacherManager : MonoBehaviourPunCallbacks
 
     private void SpectatePlayer()
     {
-
-        cameraMovement.setPlayer(playerList.getPlayerList()[selectedPlayer].gameObject.GetComponent<Transform>());
+        cameraMovement.setPlayer(playerList.getPlayerList()[selectedPlayerName].gameObject.GetComponent<Transform>());
         this.teacherUI.SetActive(false);
         backButton.gameObject.SetActive(true);
-
     }
 
 }

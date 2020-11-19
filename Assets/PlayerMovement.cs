@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviourPun
     public float speed = 1000f;
     public Rigidbody rb;
     public PhotonView photonView;
-    public Animator anim;
+    //public Animator anim;
 
     void Update()
     {
@@ -46,8 +46,8 @@ public class PlayerMovement : MonoBehaviourPun
             dY = 0;
             dX = 0;
         }
-        anim.SetFloat("Forward", dZ);
-        anim.SetFloat("Right", dX);
+        //anim.SetFloat("Forward", dZ);
+        //anim.SetFloat("Right", dX);
     }
 
     void FixedUpdate()

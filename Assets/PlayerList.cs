@@ -24,7 +24,7 @@ public class PlayerList : MonoBehaviour
 
         //Create a list of players in the Unity Game
         GameObject[] players = GameObject.FindGameObjectsWithTag("student");
-        Debug.Log("Amoung of players" + players.Count().ToString());
+        Debug.Log("Amoung of players " + players.Count().ToString());
         //Add any player thats in the Unity Game but not in the playerList (The player joined the game)
         foreach(GameObject player in players)
         {

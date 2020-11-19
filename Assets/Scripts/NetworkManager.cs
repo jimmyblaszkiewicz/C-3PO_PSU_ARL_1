@@ -112,7 +112,7 @@ public class NetworkManager : MonoBehaviour
         PlayerStatistics playerStats = player.GetComponent <PlayerStatistics>();
 
         SaveData save = new SaveData();
-        save.Position = player.GetComponent<Transform>().position;
+        save.Position = player.GetComponent<Transform>().position; //TODO: think about removing saving player position. not useful given how small the town and scenes are
         save.Rotation = player.GetComponent<Transform>().rotation;
         save.timeSpent = player.GetComponent<PlayerStatistics>().timeSpent;
         save.scenariosCompleted = player.GetComponent<PlayerStatistics>().scenariosCompleted;

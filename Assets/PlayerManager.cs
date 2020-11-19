@@ -15,6 +15,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     public Text timeSpentText;
     public Text scenariosCompleted;
     public Text name;
+    public Text popUpText;
     public GameObject computer;
     public GameObject teacherUI;
 
@@ -58,6 +59,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         name = GetChild(canvas, "Text3").GetComponent<Text>();
         timeSpentText = GetChild(canvas, "Text1").GetComponent<Text>();
         scenariosCompleted = GetChild(canvas, "Text2").GetComponent<Text>();
+        popUpText = GetChild(GetChild(canvas, "Top Panel"), "PopUp").GetComponent<Text>();
     }
 
     private GameObject GetChild(GameObject obj, string name)
@@ -77,7 +79,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     void OnApplicationQuit()
     {
-        if(player!= null);
+        if(player!= null)
             networkManager.savePlayerData(player);
     }
 
@@ -94,6 +96,33 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     public void LoadScene(int scene_number)
     {
         PhotonNetwork.LoadLevel(scene_number);
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Do nothing on the Main menu scene
+        if (scene.buildIndex == 0)
+            return;
+
+        // Otherwise look for a PlayerStart component and move the player there:
+        var playerStart = FindObjectOfType<PlayerStart>();
+        if (playerStart != null)
+        {
+            player.transform.position = playerStart.transform.position;
+        }
+    }
+
+    public void SetPopUpText(string text) 
+    {
+       popUpText.text = text;
+    }
+
+    public void SetKeyControls(bool keys_disabled)
+    {
+        //Usage: SetKeyControls(true) will disable the player's arrow key control over the robot,
+        // but not the command or editor controls
+        var playerMovement = player.GetComponent<PlayerMovement>();
+        playerMovement.keys_disabled = keys_disabled;
     }
 
     // Update is called once per frame

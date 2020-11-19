@@ -1012,6 +1012,7 @@ MonoBehaviour:
   dZ: 0
   dY: 0
   command_running: 0
+  keys_disabled: 0
   speed: 500
   rb: {fileID: 609840772423212232}
   photonView: {fileID: 6786851837035706221}

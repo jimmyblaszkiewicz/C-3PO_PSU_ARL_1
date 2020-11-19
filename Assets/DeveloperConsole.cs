@@ -62,7 +62,7 @@ namespace Console
         {
             Instance = this;
             Commands = new Dictionary<string, ConsoleCommand>();
-            directory = "/Users/James: ";
+            directory = "/Users/James: "; // TODO: Remove this or set it to something useful
             player = null;
 
         }
@@ -104,6 +104,7 @@ namespace Console
             ListCommand listCommand = new ListCommand(Commands);
             EditorCommand editorCommand = new EditorCommand(virtualOS);
             StopCommand stopCommand = new StopCommand();
+            DisableKeyCommand disableKeyCommand= new DisableKeyCommand();
   
         }
 

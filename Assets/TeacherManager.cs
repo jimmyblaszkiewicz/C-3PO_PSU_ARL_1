@@ -151,6 +151,10 @@ public class TeacherManager : MonoBehaviourPunCallbacks
             playerMovement.keys_disabled = !playerMovement.keys_disabled;
             // TODO: Add some output / feedback to the teacher ui to show what we just did
             Debug.Log("Toggled movement controls for player: " + selectedPlayerName + " to: " + playerMovement.keys_disabled.ToString());
+            PlayerManager playerManager = playerList.getPlayerList()[selectedPlayerName].gameObject.GetComponentInParent<PlayerManager>();
+            Debug.Log("Got player's playerManager");
+            //Debug.Log("Player Manager Time Spent: " + playerManager.timeSpentText);
+            playerManager.SetPopUpText("You've had your movement keys disabled. Try to enable them again with a console command!");
         }
     }
 

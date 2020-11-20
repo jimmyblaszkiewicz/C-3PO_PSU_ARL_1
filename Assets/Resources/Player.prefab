@@ -322,7 +322,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6549766908295227382}
   - component: {fileID: 2860737627434594666}
-  - component: {fileID: 6435929404128804120}
   m_Layer: 0
   m_Name: Robot
   m_TagString: Untagged
@@ -400,20 +399,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0080631375, y: 0.46614245, z: 0.044283748}
     m_Extent: {x: 0.57114387, y: 0.46301112, z: 0.57559097}
   m_DirtyAABB: 0
---- !u!64 &6435929404128804120
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2946367225726122406}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 7682338098397548711, guid: d9f2ade01a565754dbc9a7acef4074f2, type: 3}
 --- !u!1 &3116781264186053312
 GameObject:
   m_ObjectHideFlags: 0

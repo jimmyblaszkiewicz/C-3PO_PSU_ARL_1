@@ -59,7 +59,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         name = GetChild(canvas, "Text3").GetComponent<Text>();
         timeSpentText = GetChild(canvas, "Text1").GetComponent<Text>();
         scenariosCompleted = GetChild(canvas, "Text2").GetComponent<Text>();
-        popUpText = GetChild(GetChild(canvas, "Top Panel"), "PopUp").GetComponent<Text>();
+        popUpText = GetChild(GameObject.Find("Top Panel"), "PopUp").GetComponent<Text>();
+        Debug.Log("Computer Object created");
+        SetUpScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     private GameObject GetChild(GameObject obj, string name)
@@ -95,13 +97,13 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     public void LoadScene(int scene_number)
     {
-        PhotonNetwork.LoadLevel(scene_number);
+        SceneManager.LoadScene(scene_number);
     }
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    void SetUpScene(int buildIndex)
     {
         // Do nothing on the Main menu scene
-        if (scene.buildIndex == 0)
+        if (buildIndex == 0)
             return;
 
         // Otherwise look for a PlayerStart component and move the player there:
@@ -109,6 +111,23 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         if (playerStart != null)
         {
             player.transform.position = playerStart.transform.position;
+            Debug.Log("Player transported to start location");
+        }
+        
+
+        // Should we disable movement keys
+        if (buildIndex == 1)
+            SetKeyControls(false);
+        else if (buildIndex == 2)
+            SetKeyControls(true);
+        
+        // What pop up message should we show
+        if (buildIndex == 1)
+            SetPopUpText("");
+        if (buildIndex == 2)
+        {
+            SetPopUpText("Your movement keys have been disabled! Get to the end of the maze using console commands");
+            // TODO: Ideally we would un-set this after a certain period of time
         }
     }
 

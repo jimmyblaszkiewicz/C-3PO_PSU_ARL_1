@@ -3,8 +3,6 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
-using System.Security.Cryptography;
-
 
 using Photon.Realtime;
 
@@ -119,11 +117,12 @@ namespace Photon.Pun.Demo.PunBasics
                     PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, typedLobby); //4  
 
                 }
-                else if (networkManager.validateLogin(name, password) == "alreadyLoggedIn"){
+                else if (networkManager.validateLogin(name, password) == "alreadyLoggedIn")
+                {
                     playerStatus.text = "User is already logged in.";
                 }
-                else if (networkManager.validateLogin(name, password) == "wrongPassword"){
-                    //"wrongPassword"){
+                else if (networkManager.validateLogin(name, password) == "wrongPassword")
+                {
                     playerStatus.text = "Incorrect Username/Password.";
                 }
                 else

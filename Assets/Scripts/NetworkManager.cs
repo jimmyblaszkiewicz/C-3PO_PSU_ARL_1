@@ -10,16 +10,16 @@ public class NetworkManager : MonoBehaviour
     public string username;
     public Dictionary<string, UserInfo> userInfo;
 
-    // public Dictionary<string, byte[]> userInfo;
-    // public List<User> userInfo;
     RSACryptoServiceProvider provider;
     RSAParameters rsaKeyInfo;
 
-    public class UserInfo {
+    public class UserInfo 
+    {
         public byte[] password {get; set;}
         public bool isLoggedIn {get; set;}
 
-        public UserInfo(byte[] pass, bool loggedIn){
+        public UserInfo(byte[] pass, bool loggedIn)
+        {
             password = pass;
             isLoggedIn = loggedIn;
 
@@ -61,11 +61,10 @@ public class NetworkManager : MonoBehaviour
     }
 
 
-    public void addUser(string Username, byte[] Password)
+    private void addUser(string Username, byte[] Password)
     {
         UserInfo newUserInfo = new UserInfo(Password, false);
         userInfo.Add(Username, newUserInfo);
-        // userInfo.Add(Username, <Password, isLoggedIn>);
     }
 
     public void setUserLoginStatus(string Username, bool status)
@@ -78,7 +77,7 @@ public class NetworkManager : MonoBehaviour
         addUser(Username, Encrypt(Password));
     }
 
-    public byte[] Encrypt(string password)
+    private byte[] Encrypt(string password)
     {
         return provider.Encrypt(System.Text.Encoding.UTF8.GetBytes(password), true);
     }

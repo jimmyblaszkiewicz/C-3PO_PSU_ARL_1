@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Security.Cryptography;
+
 
 using Photon.Realtime;
 
@@ -105,7 +107,7 @@ namespace Photon.Pun.Demo.PunBasics
                 password = playerPasswordField.text;
                 roomName = roomNameField.text;
 
-                if (networkManager.validateLogin(name, password))
+                if (networkManager.validateLogin(name, password) == "good")
                 {
                     playerStatus.text = "Correct password!";
                     PhotonNetwork.LocalPlayer.NickName = playerName; //1
@@ -117,9 +119,35 @@ namespace Photon.Pun.Demo.PunBasics
                     PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, typedLobby); //4  
 
                 }
-                else
+                else if (networkManager.validateLogin(name, password) == "alreadyLoggedIn"){
+                    playerStatus.text = "User is already logged in.";
+                }
+                else if (networkManager.validateLogin(name, password) == "wrongPassword"){
+                    //"wrongPassword"){
                     playerStatus.text = "Incorrect Username/Password.";
+                }
+                else
+                {
+                    playerStatus.text = "User does not exist.";
+                }
 
+            }
+        }
+
+
+        public void CreateNewUser()
+        {
+            if (PhotonNetwork.IsConnected)
+            {
+                string pname = playerNameField.text;
+                string pword = playerPasswordField.text;
+
+                playerName = playerNameField.text;
+                password = playerPasswordField.text;
+
+                networkManager.addNewUser(pname, pword);
+                playerStatus.text = "New User Created!";
+                return;
             }
         }
 
@@ -134,6 +162,7 @@ namespace Photon.Pun.Demo.PunBasics
             }
             else
             {
+                networkManager.setUserLoginStatus(playerName, true);
                 PhotonNetwork.LoadLevel(1);
             }
         }

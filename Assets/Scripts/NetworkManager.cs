@@ -8,13 +8,30 @@ public class NetworkManager : MonoBehaviour
 {
 
     public string username;
-    public Dictionary<string, byte[]> userInfo;
+    public Dictionary<string, UserInfo> userInfo;
+
     RSACryptoServiceProvider provider;
     RSAParameters rsaKeyInfo;
 
+    public class UserInfo 
+    {
+        public byte[] password {get; set;}
+        public bool isLoggedIn {get; set;}
+
+        public UserInfo(byte[] pass, bool loggedIn)
+        {
+            password = pass;
+            isLoggedIn = loggedIn;
+
+        }
+    }
+
     void Awake()
     {
-        userInfo = new Dictionary<string, byte[]>();
+        // userInfo = new List<User>();
+        // userInfo = new Dictionary<string, byte[]>();
+        userInfo = new Dictionary<string, UserInfo>();
+
         provider = new RSACryptoServiceProvider();
         rsaKeyInfo = provider.ExportParameters(false);
 
@@ -23,6 +40,7 @@ public class NetworkManager : MonoBehaviour
         addUser("Rebecca", Encrypt("Hello"));
         addUser("Chris", Encrypt("Hi"));
         addUser("Teacher", Encrypt("1"));
+        addUser("Test", Encrypt("Test"));
 
         DontDestroyOnLoad(this);
 
@@ -43,12 +61,21 @@ public class NetworkManager : MonoBehaviour
     }
 
 
-    public void addUser(string Username, byte[] Password)
+    private void addUser(string Username, byte[] Password)
     {
-        userInfo.Add(Username, Password);
+        UserInfo newUserInfo = new UserInfo(Password, false);
+        userInfo.Add(Username, newUserInfo);
     }
 
+    public void setUserLoginStatus(string Username, bool status)
+    {
+        userInfo[Username].isLoggedIn = status;
+    }
 
+    public void addNewUser(string Username, string Password)
+    {
+        addUser(Username, Encrypt(Password));
+    }
 
     private byte[] Encrypt(string password)
     {
@@ -60,18 +87,29 @@ public class NetworkManager : MonoBehaviour
         return System.Text.Encoding.UTF8.GetString(provider.Decrypt(encryptedPassword, true));
     }
 
-    public bool validateLogin(string name, string password)
+    public string validateLogin(string name, string password)
     {
-        if (userInfo.ContainsKey(name) && Decrypt(userInfo[name]) == password)
+        if (userInfo.ContainsKey(name) && Decrypt(userInfo[name].password) == password && userInfo[name].isLoggedIn == false)
         {
             Debug.Log("correct password");
             username = name;
-            return true;
+            return "good";
+            // return true;
+        }
+        else if (userInfo.ContainsKey(name) && userInfo[name].isLoggedIn == true){
+            Debug.Log("User is already logged in!");
+            return "alreadyLoggedIn";
+            // return false;
+        }
+        else if (userInfo.ContainsKey(name) && Decrypt(userInfo[name].password) != password)
+        {
+            Debug.Log("Incorrect Username/Password!");
+            return "wrongPassword";
+            // return false;
         }
         else
         {
-            Debug.Log("Incorrect Username/Password!");
-            return false;
+            return "userDoesNotExist";
         }
 
     }
@@ -112,7 +150,7 @@ public class NetworkManager : MonoBehaviour
         PlayerStatistics playerStats = player.GetComponent <PlayerStatistics>();
 
         SaveData save = new SaveData();
-        save.Position = player.GetComponent<Transform>().position; //TODO: think about removing saving player position. not useful given how small the town and scenes are
+        save.Position = player.GetComponent<Transform>().position;
         save.Rotation = player.GetComponent<Transform>().rotation;
         save.timeSpent = player.GetComponent<PlayerStatistics>().timeSpent;
         save.scenariosCompleted = player.GetComponent<PlayerStatistics>().scenariosCompleted;
@@ -137,5 +175,3 @@ public class SaveData
     public string name;
     public int scenariosCompleted;
 }
-
-

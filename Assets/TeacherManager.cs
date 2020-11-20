@@ -19,10 +19,12 @@ public class TeacherManager : MonoBehaviourPunCallbacks
     private GameObject selectedPlayer;
     public CameraMovement cameraMovement;
     public GameObject teacherUI;
+    public Button movementButton;
 
     public Text timespent;
     public Text name;
     public Text scenariosCompleted;
+    public Text movementDisabled;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +32,8 @@ public class TeacherManager : MonoBehaviourPunCallbacks
         buttonDictionary = new Dictionary<string, GameObject>();
         monitorButton.onClick.AddListener(SpectatePlayer);
         monitorButton.gameObject.SetActive(false);
+        movementButton.gameObject.SetActive(false);
+        movementButton.onClick.AddListener(ToggleMovement);
         backButton.onClick.AddListener(BackToLobby);
         backButton.gameObject.SetActive(false);
         selectedPlayerName = null;
@@ -49,7 +53,7 @@ public class TeacherManager : MonoBehaviourPunCallbacks
             timespent.text = "Total Time Spent: " + string.Format("{0:.##}",activePlayer.timeSpent) + " s";
             name.text = "Student : " + activePlayer.name;
             scenariosCompleted.text = "Scenarios Completed: " + activePlayer.scenariosCompleted.ToString();
-
+            movementDisabled.text = "Movement Disabled: " + activePlayer.GetComponent<PlayerMovement>().keys_disabled.ToString();
         }
             
 
@@ -75,6 +79,7 @@ public class TeacherManager : MonoBehaviourPunCallbacks
                 {
                     selectedPlayerName = null;
                     HideMonitorButton();
+                    HideToggleMovementButton();
                 }
                 RemoveButton(entry.Key);
             }
@@ -83,7 +88,16 @@ public class TeacherManager : MonoBehaviourPunCallbacks
 
     }
 
-
+    
+    private void HideToggleMovementButton()
+    {
+        movementButton.gameObject.SetActive(false);
+    }
+    private void ShowToggleMovementButton()
+    {
+        movementButton.gameObject.SetActive(true);
+    }
+    
     private void HideMonitorButton()
     {
         monitorButton.gameObject.SetActive(false);
@@ -119,7 +133,7 @@ public class TeacherManager : MonoBehaviourPunCallbacks
         selectedPlayerName = name;
         selectedPlayer = playerList.getPlayerList()[selectedPlayerName].getPlayer();
         ShowMonitorButton();
-        //comment
+        ShowToggleMovementButton();
     }
 
     void BackToLobby()
@@ -127,6 +141,17 @@ public class TeacherManager : MonoBehaviourPunCallbacks
         this.teacherUI.SetActive(true);
         backButton.gameObject.SetActive(false);
 
+    }
+    private void ToggleMovement()
+    {
+        if(selectedPlayerName != null)
+        {
+            // get a reference to the selected player's movement manager
+            PlayerMovement playerMovement = playerList.getPlayerList()[selectedPlayerName].gameObject.GetComponent<PlayerMovement>();
+            playerMovement.keys_disabled = !playerMovement.keys_disabled;
+            // TODO: Add some output / feedback to the teacher ui to show what we just did
+            Debug.Log("Toggled movement controls for player: " + selectedPlayerName + " to: " + playerMovement.keys_disabled.ToString());
+        }
     }
 
     private void SpectatePlayer()

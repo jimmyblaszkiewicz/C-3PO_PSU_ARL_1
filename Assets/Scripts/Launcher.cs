@@ -154,7 +154,7 @@ namespace Photon.Pun.Demo.PunBasics
                 // if username or password fields are blank, inform user and return
                 else
                 {
-                    playerStatus.text = "Must eneter valid Username and Passsword.";
+                    playerStatus.text = "Must enter valid Username and Passsword.";
                     return;
                 }
             }

@@ -138,15 +138,25 @@ namespace Photon.Pun.Demo.PunBasics
         {
             if (PhotonNetwork.IsConnected)
             {
-                string pname = playerNameField.text;
-                string pword = playerPasswordField.text;
+                // makes sure fields are not blank and creates user if so
+                if( (playerNameField.text != "") && (playerPasswordField.text != "") )
+                {
+                    string pname = playerNameField.text;
+                    string pword = playerPasswordField.text;
 
-                playerName = playerNameField.text;
-                password = playerPasswordField.text;
+                    playerName = playerNameField.text;
+                    password = playerPasswordField.text;
 
-                networkManager.addNewUser(pname, pword);
-                playerStatus.text = "New User Created!";
-                return;
+                    networkManager.addNewUser(pname, pword);
+                    playerStatus.text = "New User Created!";
+                    return;
+                }
+                // if username or password fields are blank, inform user and return
+                else
+                {
+                    playerStatus.text = "Must eneter valid Username and Passsword.";
+                    return;
+                }
             }
         }
 
